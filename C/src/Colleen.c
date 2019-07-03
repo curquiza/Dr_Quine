@@ -10,7 +10,7 @@ int main()
 	/*
 		inside comment
 	*/
-	char *s = "#include<stdio.h>%c%c/*%c%coutside comment%c*/%cvoid lol() {}%c%cint main()%c{%c%c/*%c%c%cinside comment%c%c*/%c%cchar *s = %c%s%c;%c%cprintf(s, 10, 10, 10, 9, 10, 10, 10, 10, 10, 10, 9, 10, 9, 9, 10, 9, 10, 9, 34, s, 34, 10, 9, 10, 9, 10, 10);%c%clol();%c}%c";
-	printf(s, 10, 10, 10, 9, 10, 10, 10, 10, 10, 10, 9, 10, 9, 9, 10, 9, 10, 9, 34, s, 34, 10, 9, 10, 9, 10, 10);
+	char *s = "#include<stdio.h>%1$c%1$c/*%1$c%2$coutside comment%1$c*/%1$cvoid lol() {}%1$c%1$cint main()%1$c{%1$c%2$c/*%1$c%2$c%2$cinside comment%1$c%2$c*/%1$c%2$cchar *s = %3$c%4$s%3$c;%1$c%2$cprintf(s, 10, 9, 34, s);%1$c%2$clol();%1$c}%1$c";
+	printf(s, 10, 9, 34, s);
 	lol();
 }
