@@ -1,10 +1,9 @@
 # comment
-s = "# comment\ns = %s\nbegin\n  file = File.open('Grace_kid.rb', 'w')\nrescue\n  puts 'Error'\nelse\n  file.printf(s, s.inspect)\n  file.close\nend\n"
+s = "# comment\ns = %s\nbegin\n  file = File.open('Grace_kid.rb', 'w')\n  file.printf(s, s.inspect)\n  file.close\nrescue\n  puts 'Error'\nend\n"
 begin
   file = File.open('Grace_kid.rb', 'w')
-rescue
-  puts 'Error'
-else
   file.printf(s, s.inspect)
   file.close
+rescue
+  puts 'Error'
 end
