@@ -14,3 +14,9 @@ $> cd C/
 $> make
 $> make test_all
 ```
+## In Ruby ❤️
+
+```bash
+$> cd Ruby/
+$> bash test.sh
+```
