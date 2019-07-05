@@ -1,0 +1,10 @@
+*.o
+*.swp
+a.out
+.vscode
+Colleen
+Grace
+Sully
+Grace_kid.c
+Grace_kid.s
+Sully_*
