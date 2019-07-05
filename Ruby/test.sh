@@ -14,3 +14,13 @@ printf "$YELLOW$>$DEF %s\n" 'ruby Grace.rb'
 ruby Grace.rb
 printf "$YELLOW$>$DEF %s\n" "diff Grace.rb Grace_kid.rb"
 diff Grace.rb Grace_kid.rb
+
+printf "\n$YELLOW%s\n$DEF" "SULLY"
+printf "$YELLOW$>$DEF %s\n" 'rm -f Sully_*.rb'
+rm -f Sully_*.rb
+printf "$YELLOW$>$DEF %s\n" 'ruby Sully.rb'
+ruby Sully.rb
+printf "$YELLOW$>$DEF %s\n" "diff Sully.rb Sully_0.rb"
+diff Sully.rb Sully_0.rb
+printf "$YELLOW$>$DEF %s\n" "diff Sully_3.rb Sully_2.rb"
+diff Sully_3.rb Sully_2.rb
