@@ -18,21 +18,21 @@ OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 all : $(COLLEEN) $(GRACE) $(SULLY)
 
-$(COLLEEN): $(OBJ)
-	@$(CC) $(FLAG) $(OBJ_DIR)/Colleen.o -o $(COLLEEN)
+$(COLLEEN): $(OBJ_DIR)/$(COLLEEN).o
+	@$(CC) $^ -o $@
 	@printf "%-45s\033[1;32m%s\033[0m\n" "Make $@" "OK"
 
-$(GRACE): $(OBJ)
-	@$(CC) $(FLAG) $(OBJ_DIR)/GRACE.o -o $(GRACE)
+$(GRACE): $(OBJ_DIR)/$(GRACE).o
+	@$(CC) $^ -o $@
 	@printf "%-45s\033[1;32m%s\033[0m\n" "Make $@" "OK"
 
-$(SULLY): $(OBJ)
-	@$(CC) $(FLAG) $(OBJ_DIR)/SULLY.o -o $(SULLY)
+$(SULLY): $(OBJ_DIR)/$(SULLY).o
+	@$(CC) $^ -o $@
 	@printf "%-45s\033[1;32m%s\033[0m\n" "Make $@" "OK"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(H_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	@$(CC) $(INCL) -c $< -o $@
+	@$(CC) -c $< -o $@
 	@printf "%-45s\033[1;32m%s\033[0m\n" "Make $@" "OK"
 
 test_colleen: $(COLLEEN)
@@ -53,6 +53,6 @@ clean :
 	@rm -rf $(OBJ_DIR)
 
 fclean : clean
-	@rm -f $(COLLEEN) $(GRACE) $(SULLY) Sully_*
+	@rm -f $(COLLEEN) $(GRACE) $(SULLY) Sully_* Grace_kid.c
 
 re : fclean all
