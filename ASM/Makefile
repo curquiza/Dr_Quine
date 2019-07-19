@@ -38,9 +38,9 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.s
 test_colleen: $(COLLEEN)
 	diff <(./$(COLLEEN)) src/$(COLLEEN).s
 
-# test_grace: $(GRACE)
-# 	./$(GRACE)
-# 	diff Grace_kid.s src/$(GRACE).s
+test_grace: $(GRACE)
+	./$(GRACE)
+	diff Grace_kid.s src/$(GRACE).s
 
 # test_sully: $(SULLY)
 # 	./Sully
