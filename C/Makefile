@@ -53,6 +53,6 @@ clean :
 	@rm -rf $(OBJ_DIR)
 
 fclean : clean
-	@rm -f $(COLLEEN) $(GRACE) $(SULLY)
+	@rm -f $(COLLEEN) $(GRACE) $(SULLY) Sully_*
 
 re : fclean all
