@@ -42,9 +42,9 @@ test_grace: $(GRACE)
 	./$(GRACE)
 	diff Grace_kid.s src/$(GRACE).s
 
-# test_sully: $(SULLY)
-# 	./Sully
-# 	diff src/$(SULLY).s Sully_0.s || diff Sully_3.s Sully_2.s
+test_sully: $(SULLY)
+	./Sully
+	diff src/$(SULLY).s Sully_0.s || diff Sully_3.s Sully_2.s
 
 test_all: test_colleen test_grace test_sully
 
