@@ -9,6 +9,8 @@ link: db "ld Sully_%1$d.o -macosx_version_min 10.8 -lSystem -o Sully_%1$d", 0
 execute: db "./Sully_%d", 0
 code: db "section .text", 10, "global start", 10, "global _main", 10, "start: call _main", 10, "ret", 10, "_main: mov rdi, rsi", 0
 
+format: db "rslt = %s", 10, 0
+
 section .text
 global start
 global _main
@@ -16,7 +18,6 @@ extern _system
 extern _asprintf
 extern _dprintf
 extern _free
-extern __progname
 
 start:
 call _main
@@ -25,10 +26,12 @@ ret
 _main:
 push rbp
 mov rbp, rsp
-sub rsp, 96
+; sub rsp, 96
 
 mov rdi, 1
-mov rsi, __progname
+mov rsi, format
+mov rdx, [rsp + 8]
+; mov rdx, [rdx]
 call _dprintf
 
 ; INIT
