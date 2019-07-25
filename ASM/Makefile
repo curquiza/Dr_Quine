@@ -44,8 +44,7 @@ test_grace: $(GRACE)
 
 test_sully: $(SULLY)
 	rm -f Sully_*
-	./Sully
-	diff src/$(SULLY).s Sully_0.s || diff Sully_3.s Sully_2.s
+	./Sully || diff src/$(SULLY).s Sully_0.s || diff Sully_3.s Sully_2.s
 
 test_all: test_colleen test_grace test_sully
 
