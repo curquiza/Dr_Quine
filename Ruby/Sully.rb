@@ -4,13 +4,17 @@ def write_in_file(file, s, cpt)
     file.printf(s, s.inspect, cpt)
     file.close
   rescue
-    puts 'Error'
+    exit
   end
 end
 
-s = "def write_in_file(file, s, cpt)\n  begin\n    file = File.open(file, 'w')\n    file.printf(s, s.inspect, cpt)\n    file.close\n  rescue\n    puts 'Error'\n  end\nend\n\ns = %s\ncpt = %d\ncpt = (File.basename(__FILE__) == 'Sully.rb') ? 5 : cpt - 1\nnew_file = \"Sully_\#{cpt}.rb\"\nwrite_in_file(new_file, s, cpt)\nexec(\"ruby \#{new_file}\") unless cpt <= 0\n"
+s = "def write_in_file(file, s, cpt)\n  begin\n    file = File.open(file, 'w')\n    file.printf(s, s.inspect, cpt)\n    file.close\n  rescue\n    exit\n  end\nend\n\ns = %s\ncpt = %d\nbegin\n  File.open('Sully_5.rb', 'r')\n  cpt -= 1\nrescue\nend\nnew_file = \"Sully_\#{cpt}.rb\"\nwrite_in_file(new_file, s, cpt)\nexec(\"ruby \#{new_file}\") unless cpt <= 0\n"
 cpt = 5
-cpt = (File.basename(__FILE__) == 'Sully.rb') ? 5 : cpt - 1
+begin
+  File.open('Sully_5.rb', 'r')
+  cpt -= 1
+rescue
+end
 new_file = "Sully_#{cpt}.rb"
 write_in_file(new_file, s, cpt)
 exec("ruby #{new_file}") unless cpt <= 0

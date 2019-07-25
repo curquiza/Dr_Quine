@@ -43,6 +43,7 @@ test_grace: $(GRACE)
 	diff Grace_kid.c src/$(GRACE).c
 
 test_sully: $(SULLY)
+	rm -f Sully_*
 	./Sully
 	diff src/$(SULLY).c Sully_0.c || diff Sully_3.c Sully_2.c
 
