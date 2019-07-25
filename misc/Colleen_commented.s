@@ -16,10 +16,10 @@ _main:
 push rbp
 mov rbp, rsp
 
-lea rdi, [rel code]
-mov rsi, 10
-mov rdx, 34
-lea rcx, [rel code]
+lea rdi, [rel code]		; code as format
+mov rsi, 10				; \n
+mov rdx, 34				; "
+lea rcx, [rel code]		; code as string argument
 call _printf
 
 mov rsp, rbp

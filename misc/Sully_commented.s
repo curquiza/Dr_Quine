@@ -28,69 +28,70 @@ push rbp
 mov rbp, rsp
 sub rsp, 96
 ; CPT
-mov byte[rsp], 5
+mov byte[rsp], 5				; save CPT on stack [rsp]
 mov rdi, sully5_asm_file
 mov rsi, O_RDONLY
-mov rax, OPEN_SYSCALL
+mov rax, OPEN_SYSCALL			; open Sully_5.s in read-only
 syscall
-jc sully
+jc sully						; if open failed, go to sully label
 movzx r8, byte[rsp]
 dec r8
-mov [rsp], r8
+mov [rsp], r8					; decrement CPT
 mov rdi, rax
-mov rax, CLOSE_SYSCALL
+mov rax, CLOSE_SYSCALL			; close fd
 syscall
 sully:
 ; INIT
 lea rdi, [rel rsp + 16]
 mov rsi, filename
 movzx rdx, byte[rsp]
-call _asprintf
+call _asprintf					; save filename in [rsp + 16]
 lea rdi, [rel rsp + 32]
 mov rsi, compile
 movzx rdx, byte[rsp]
-call _asprintf
+call _asprintf					; save compile string in [rsp + 32]
 lea rdi, [rel rsp + 48]
 mov rsi, link
 movzx rdx, byte[rsp]
-call _asprintf
+call _asprintf					; save link string in [rsp + 48]
 lea rdi, [rel rsp + 64]
 mov rsi, execute
 movzx rdx, byte[rsp]
-call _asprintf
+call _asprintf					; save execute string in [rsp + 64]
 ; OPEN
 mov rdi, [rsp + 16]
 mov rsi, O_CREAT_WRONLY_TRUNC
 mov rdx, 0644o
-mov rax, OPEN_SYSCALL
+mov rax, OPEN_SYSCALL			; create Sully_%d.s with CPT
 syscall
-jc free
-mov [rsp + 80], rax
+jc free							; if open failed, go to the end
+mov [rsp + 80], rax				; save fd in [rsp + 80]
 ; WRITE
-mov rdi, [rsp + 80]
-lea rsi, [rel code]
-mov rdx, 10
-mov rcx, 34
-mov r8, 37
-lea r9, [rel code]
-call _dprintf
+mov rdi, [rsp + 80]				; fd
+lea rsi, [rel code]				; code as format
+mov rdx, 10						; \n
+mov rcx, 34						; "
+mov r8, 37						; %
+lea r9, [rel code]				; code as string argument
+; 7th argument : CPT or [rsp] is already on the stack, so ok to call dprintf
+call _dprintf					; print in new Sully file
 ; CLOSE
 mov rdi, [rsp + 80]
-mov rax, CLOSE_SYSCALL
+mov rax, CLOSE_SYSCALL			; close fd
 syscall
 ; COMPILE
-mov rdi, [rsp + 32]
+mov rdi, [rsp + 32]				; nasm -f macho64 Sully_%1$d.s -o Sully_%1$d.o
 call _system
 ; LINK
-mov rdi, [rsp + 48]
+mov rdi, [rsp + 48]				; ld Sully_%1$d.o -macosx_version_min 10.8 -lSystem -o Sully_%1$d
 call _system
 ; EXECUTE
 cmp byte[rsp], 0
-je free
-mov rdi, [rsp + 64]
+je free							; if CPT == 0, go to the end
+mov rdi, [rsp + 64]				; else compile (./Sully_%d)
 call _system
 ; FREE
-free:
+free:							; free all asprintf strings
 mov rdi, [rsp + 16]
 call _free
 mov rdi, [rsp + 32]

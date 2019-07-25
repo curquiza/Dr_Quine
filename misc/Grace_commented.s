@@ -3,6 +3,7 @@
 %define CLOSE_SYSCALL 0x2000006
 %define O_CREAT_WRONLY_TRUNC 03001o
 
+; Macro with argument (called %1 in marco code line 20)
 %macro MAIN 1
 global _main
 global start
@@ -16,26 +17,26 @@ push rbp
 mov rbp, rsp
 sub rsp, 16
 
-lea rdi, [rel %1]
-mov rsi, O_CREAT_WRONLY_TRUNC
-mov rdx, 0644o
-mov rax, OPEN_SYSCALL
-syscall
+lea rdi, [rel %1]				; fd
+mov rsi, O_CREAT_WRONLY_TRUNC	; flags
+mov rdx, 0644o					; permissions
+mov rax, OPEN_SYSCALL			; load syscall
+syscall							; call open
 
-jc .end
+jc .end							; check open return with carry
 
-mov [rsp], rax
+mov [rsp], rax					; load fd onto the stack
 
-mov rdi, rax
-lea rsi, [rel code]
-mov rdx, 10
-mov rcx, 34
-mov r8, 37
-lea r9, [rel code]
+mov rdi, rax					; fd
+lea rsi, [rel code]				; code as format
+mov rdx, 10						; \n
+mov rcx, 34						; "
+mov r8, 37						; %
+lea r9, [rel code]				; code as argument
 call _dprintf
 
-mov rdi, [rsp]
-mov rax, CLOSE_SYSCALL
+mov rdi, [rsp]					; fd
+mov rax, CLOSE_SYSCALL			; close
 syscall
 
 .end:
