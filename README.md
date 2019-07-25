@@ -14,9 +14,18 @@ $> cd C/
 $> make
 $> make test_all
 ```
-## In Ruby ❤️
+
+## In Assembly
+
+```bash
+$> cd ASM/
+$> make
+$> make test_all
+```
+
+## In Ruby ❤️ (Bonus)
 
 ```bash
 $> cd Ruby/
-$> bash test.sh
+$> ./test.sh
 ```
