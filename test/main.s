@@ -24,10 +24,10 @@ push rbp
 mov rbp, rsp
 
 lea rdi, [rel format]
-mov rsi, [rbp + 40]
+mov rsi, [rbp + 32]
 call _printf
 
-mov rdi, [rbp + 40]
+mov rdi, [rbp + 32]
 mov rsi, '/'
 call _strrchr
 cmp rax, 0
