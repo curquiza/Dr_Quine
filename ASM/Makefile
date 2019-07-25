@@ -4,48 +4,47 @@ COLLEEN = Colleen
 GRACE = Grace
 SULLY = Sully
 
-FLAG = -Wall -Wextra -Werror
-CC = gcc $(FLAG)
+NASM = nasm -f macho64
 
 SRC_DIR = src
 SRC = $(addprefix $(SRC_DIR)/, \
-		Colleen.c \
-		Grace.c \
-		Sully.c)
+		Colleen.s \
+		Grace.s \
+		Sully.s \
+		)
 
 OBJ_DIR = obj
-OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJ = $(SRC:$(SRC_DIR)/%.s=$(OBJ_DIR)/%.o)
 
 all : $(COLLEEN) $(GRACE) $(SULLY)
 
 $(COLLEEN): $(OBJ_DIR)/$(COLLEEN).o
-	@$(CC) $^ -o $@
+	@ld $^ -macosx_version_min 10.8 -lSystem -o $@
 	@printf "%-45s\033[1;32m%s\033[0m\n" "Make $@" "OK"
 
 $(GRACE): $(OBJ_DIR)/$(GRACE).o
-	@$(CC) $^ -o $@
+	@ld $^ -macosx_version_min 10.8 -lSystem -o $@
 	@printf "%-45s\033[1;32m%s\033[0m\n" "Make $@" "OK"
 
 $(SULLY): $(OBJ_DIR)/$(SULLY).o
-	@$(CC) $^ -o $@
+	@ld $^ -macosx_version_min 10.8 -lSystem -o $@
 	@printf "%-45s\033[1;32m%s\033[0m\n" "Make $@" "OK"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.s
 	@mkdir -p $(OBJ_DIR)
-	@$(CC) -c $< -o $@
+	@$(NASM) $< -o $@
 	@printf "%-45s\033[1;32m%s\033[0m\n" "Make $@" "OK"
 
 test_colleen: $(COLLEEN)
-	diff <(./$(COLLEEN)) src/$(COLLEEN).c
+	diff <(./$(COLLEEN)) src/$(COLLEEN).s
 
 test_grace: $(GRACE)
 	./$(GRACE)
-	diff Grace_kid.c src/$(GRACE).c
+	diff Grace_kid.s src/$(GRACE).s
 
 test_sully: $(SULLY)
 	rm -f Sully_*
-	./Sully
-	diff src/$(SULLY).c Sully_0.c || diff Sully_3.c Sully_2.c
+	./Sully || diff src/$(SULLY).s Sully_0.s || diff Sully_3.s Sully_2.s
 
 test_all: test_colleen test_grace test_sully
 
@@ -53,6 +52,6 @@ clean :
 	@rm -rf $(OBJ_DIR)
 
 fclean : clean
-	@rm -f $(COLLEEN) $(GRACE) $(SULLY) Sully_* Grace_kid.c
+	@rm -f $(COLLEEN) $(GRACE) $(SULLY) Sully_* Grace_kid.s
 
 re : fclean all
